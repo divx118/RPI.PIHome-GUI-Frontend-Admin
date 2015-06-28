@@ -16,33 +16,13 @@ include("configs/functions.inc.php");
 $value = $_GET["s"];
 
 if($_GET["s"]){
-
 	$cutvalue=explode("_", $value);
 	$lid  = $cutvalue[0];
 	$stat = $cutvalue[1];
-
 	setLightStatus($lid,$stat);
 	$code = getCodeById($lid);
-
-	if($code['letter']=="A"){
-		$letter = "1";
-	}elseif($code['letter']=="B"){
-		$letter = "2";
-	}elseif($code['letter']=="C"){
-		$letter = "3";
-	}elseif($code['letter']=="D"){
-		$letter = "4";
-	}
-
-	if($stat=="on"){
-                $status = "1";
-        }elseif($stat=="off"){
-                $status = "0";
-        }
-
-	$co = $code['code'];
-
-	#echo "sudo /home/div/rcswitch-pi/send ".$co." ".$letter." ".$status;
-	shell_exec('sudo /home/div/rcswitch-pi/send '.$co.' '.$letter.' '.$status.' ');
+	#exec("echo 'klick ".$lid." ".$stat." ".$code['letter']." ".$code['code']."' >> klick.txt  ");
+	file_get_contents("http://localhost:8888/request/".$code['letter']."/".$stat."/".$code['code']);
+	#exec("sudo python3.2 api.py A on 1 0 0 0 0 ");
 }
 ?>

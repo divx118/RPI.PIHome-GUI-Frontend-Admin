@@ -116,31 +116,16 @@ function getCodeById($id)
 
 
 
-function allOff()
-{
+function allOff(){
 	dbconnect();
 	$sql_alloff = "SELECT * FROM pi_devices WHERE status = 1 ";
 	$query_alloff = mysql_query($sql_alloff);
 	while($getallon = mysql_fetch_assoc($query_alloff)){
-		$stat="off";		
-		setLightStatus($getallon["id"],$stat);		
-        if($getallon['letter']=="A"){
-            $letter = "1";
-        }elseif($getallon['letter']=="B"){
-            $letter = "2";
-        }elseif($getallon['letter']=="C"){
-            $letter = "3";
-        }elseif($getallon['letter']=="D"){
-            $letter = "4";
-        }
-        if($stat=="on"){
-                $status = "1";
-        }elseif($stat=="off"){
-                $status = "0";
-        }
-        $co = $getallon['code'];
-        shell_exec('sudo /home/div/rcswitch-pi/send '.$co.' '.$letter.' '.$status.' ');        
-	}	
+		$stat="off";
+		#echo $getallon["id"]."  ".$getallon['letter']."  ".$getallon['code']."<br>";
+		setLightStatus($getallon["id"],$stat);
+		file_get_contents("http://localhost:8888/request/".$getallon['letter']."/".$stat."/".$getallon['code']);
+                }
 }
 
 
