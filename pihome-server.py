@@ -24,19 +24,15 @@ class Handler(BaseHTTPRequestHandler):
         	self.send_header('Content-type', 'text/html')
         	self.end_headers()
         	datastring = str(self.path).split("request/")[1].split("/")
-                print(datastring)
                 # Check the received string
                 if bool(re.match("^[a-d]$", string.lower(datastring[0]), flags = 0)):
                   letter = ord(string.lower(datastring[0])) - 97
-                  print ("letter ",letter)
                   if bool(re.match("^(on)$", string.lower(datastring[1]), flags = 0)):
         	    status = 1
                   elif bool(re.match("^(off)$", string.lower(datastring[1]), flags = 0)):
                     status = 0
         	  if bool(re.match("^([0-1]{5})$",datastring[2],flags = 0)):
-                    print ("hello ",datastring[2])
                     os.system("/home/div/rcswitch-pi/send " + datastring[2] + " " + str(letter) + " " + str(status))
-                    print(datastring[2] + " " + str(letter) + " " + "1")                
                   return      
 	except IOError:
 		self.send_error(404,'File Not Found: ' + self.path)
